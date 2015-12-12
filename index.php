@@ -16,6 +16,7 @@ $sql = "SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type 
 <html>
 <head>
     <title>Hoofdpagina PoC groep C</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 <h1>Hoofdpagina</h1>
@@ -39,7 +40,7 @@ if($result = mysqli_query($con, $sql))
 {
     while($row = mysqli_fetch_assoc($result))
     {
-        echo '<tr><td>'. $row['mmsi'] . '</td><td>' . $row['name'] . '</td><td>' . date('H:i:s, d-m-Y',$row['timestamp']). '</td></tr>';
+        echo '<tr><td><a href="track.php?mmsi=' . $row['mmsi'] . '&name=' . $row['name'] . '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . date('H:i:s, d-m-Y', $row['timestamp']) . '</td></tr>';
     }
     mysqli_free_result($result);
 }

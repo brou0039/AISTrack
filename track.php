@@ -9,23 +9,27 @@
 
 require_once 'db.php';
 
-$sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=227075560 ORDER BY TIMESTAMP ASC";
+$sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP ASC";
 ?>
 <html>
 <head>
-    <title>Hoofdpagina PoC groep C</title>
+    <title>Tracking</title>
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 <h1>Tracking Page</h1>
 <h3>This page shows the movements (longitude and latitude) of the ship you clicked.</h3>
 
-<table id="table">
-    <tr>
-        <td><h2>mmsi</h2></td>
-        <td><h2>name</h2></td>
-    </tr>
-    <tr>
+
+<?php
+    if ($result = mysqli_query($con, $sql)) {
+        echo '
+        <table id="table">
+        <tr>
+            <th>' . $_GET["mmsi"] . '</th>
+            <th>' . $_GET["name"] . '</th>
+            </tr>
+            <tr>
         <th>
             timestamp
         </th>
@@ -38,21 +42,19 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
         <th>
             navigational status (0-15)
         </th>
-    </tr>
-
-    <?php
-    if ($result = mysqli_query($con, $sql)) {
+        </tr>';
         while ($row = mysqli_fetch_assoc($result)) {
             echo '<tr><td style="font-size: x-small">' . date('H:i:s, d-m-Y', $row['timestamp']) . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td></tr>';
         }
         mysqli_free_result($result);
+        echo '</table>';
     } else {
-        echo "you dun fucked up your query";
+        echo "Something went wrong. Please return to the main page and try again.";
     }
     mysqli_close($con);
 
     ?>
 
-</table>
+<a href="index.php">back to the main page.</a>
 </body>
 </html>
