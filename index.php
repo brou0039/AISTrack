@@ -10,10 +10,9 @@
   //db.php is used to connect to the database. in this file a mysqli object is made, called $con.
 require_once 'db.php';
 
-$sql = "SELECT DISTINCT mmsi, name, timestamp FROM ais_data ORDER BY timestamp DESC";
+$sql = "SELECT mmsi, name, timestamp FROM ais_data GROUP BY mmsi ORDER BY timestamp DESC";
 
 ?>
-
 <html>
 <head>
     <title>Hoofdpagina PoC groep C</title>
