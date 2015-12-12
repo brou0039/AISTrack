@@ -47,7 +47,9 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
         </th>
         </tr>';
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<tr><td style="font-size: x-small">' . date('H:i:s, d-m-Y', $row['timestamp']) . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+            $date = new DateTime();
+            $date->setTimestamp ( $row['timestamp'] );
+            echo '<tr><td style="font-size: x-small">' . $date->format('H:i:s, d-m-Y') . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
         }
         mysqli_free_result($result);
         echo '</table>';

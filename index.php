@@ -43,7 +43,7 @@ if($result = mysqli_query($con, $sql))
         $date = new DateTime();
         $date->setTimestamp ( $row['timestamp'] );
         echo '<tr><td><a href="track.php?mmsi=' . $row['mmsi'] . '&name=' . $row['name'] .
-            '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . $date->format('H:i:s Y-m-d') . '</td></tr>';
+            '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . $date->format('H:i:s, d-m-Y') . '</td></tr>';
     }
     mysqli_free_result($result);
 }
