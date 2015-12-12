@@ -9,7 +9,7 @@
 
 require_once 'db.php';
 
-$sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP ASC";
+$sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP DESC";
 ?>
 <html>
 <head>
@@ -18,7 +18,7 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
 </head>
 <body>
 <h1>Tracking Page</h1>
-<h3>This page shows the movements (longitude and latitude) of the ship you clicked.</h3>
+<h3>Hier staan de gegevens van het schip dat is aangeklikt ind e tabel op de hoofdpagina.</h3>
 
 
 <?php
@@ -31,7 +31,7 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
             </tr>
             <tr>
         <th>
-            timestamp
+            tijd
         </th>
         <th>
             longitude
@@ -40,11 +40,14 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
             latitude
         </th>
         <th>
-            navigational status (0-15)
+            navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
+        </th>
+        <th>
+            Google Maps locatie
         </th>
         </tr>';
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<tr><td style="font-size: x-small">' . date('H:i:s, d-m-Y', $row['timestamp']) . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td></tr>';
+            echo '<tr><td style="font-size: x-small">' . date('H:i:s, d-m-Y', $row['timestamp']) . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
         }
         mysqli_free_result($result);
         echo '</table>';
