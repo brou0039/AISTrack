@@ -11,7 +11,6 @@
 require_once 'db.php';
 
 $sql = "SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 GROUP BY mmsi ORDER BY timestamp DESC";
-
 ?>
 <html>
 <head>
@@ -40,10 +39,9 @@ if($result = mysqli_query($con, $sql))
 {
     while($row = mysqli_fetch_assoc($result))
     {
-        $date = new DateTime();
-        $date->setTimestamp ( $row['timestamp'] );
+        $date = DateTime::createFromFormat('U', $row['timestamp']);
         echo '<tr><td><a href="track.php?mmsi=' . $row['mmsi'] . '&name=' . $row['name'] .
-            '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . $date->format('H:i:s, d-m-Y') . '</td></tr>';
+            '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . date_format($date, 'H:i:s d-m-Y') . '</td></tr>';
     }
     mysqli_free_result($result);
 }

@@ -8,8 +8,6 @@
  */
 
 require_once 'db.php';
-
-$sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP DESC";
 ?>
 <html>
 <head>
@@ -18,12 +16,16 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
 </head>
 <body>
 <h1>Tracking Page</h1>
-<h3>Hier staan de gegevens van het schip dat is aangeklikt ind e tabel op de hoofdpagina.</h3>
+
 
 
 <?php
+if (isset($_GET['mmsi'])) {
+    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP DESC";
+
     if ($result = mysqli_query($con, $sql)) {
         echo '
+        <h3>Hier staan de gegevens van het schip dat is aangeklikt in de tabel op de hoofdpagina.</h3>
         <table id="table">
         <tr>
             <th>' . $_GET["mmsi"] . '</th>
@@ -47,19 +49,20 @@ $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE
         </th>
         </tr>';
         while ($row = mysqli_fetch_assoc($result)) {
-            $date = new DateTime();
-            $date->setTimestamp ( $row['timestamp'] );
-            echo '<tr><td style="font-size: x-small">' . $date->format('H:i:s, d-m-Y') . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+            $date = DateTime::createFromFormat('U', $row['timestamp']);
+            echo '<tr><td style="font-size: x-small">' . date_format($date, 'H:i:s d-m-Y') . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
         }
         mysqli_free_result($result);
         echo '</table>';
-    } else {
-        echo "Something went wrong. Please return to the main page and try again.";
     }
+} else {
+    echo "<h2>Oeps!</h2> er is iets fout gegaan. <br />Ga terug naar de hoofdpagina en probeer het opnieuw.<br/><br/>";
+
+}
     mysqli_close($con);
 
     ?>
 
-<a href="index.php">back to the main page.</a>
+<a href="index.php">terug naar de hoofdpagina.</a>
 </body>
 </html>
