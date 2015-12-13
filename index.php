@@ -10,7 +10,8 @@
   //db.php is used to connect to the database. in this file a mysqli object is made, called $con.
 require_once 'db.php';
 
-$sql = "SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 GROUP BY mmsi ORDER BY timestamp DESC";
+$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data ORDER BY timestamp DESC LIMIT 18446744073709551615) AS sub GROUP BY mmsi ORDER BY timestamp DESC"; //TODO optimise query
+//$sql = "SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 GROUP BY mmsi ORDER BY timestamp DESC";
 ?>
 <html>
 <head>
