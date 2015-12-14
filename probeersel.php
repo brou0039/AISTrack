@@ -10,7 +10,7 @@ $pages = 0;
 $onder = 0;
 $boven = 50;
 $pag = 1;
-$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data";
+$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data WHERE type IN(0 ,33) OR type >=70";
 
 if(!isset($_GET['onder']))
 {
