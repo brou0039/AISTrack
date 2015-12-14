@@ -10,7 +10,7 @@ $pages = 0;
 $onder = 0;
 $boven = 50;
 $pag = 1;
-$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data WHERE type IN(0 ,33) OR type >=70";
+$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data WHERE type IN(0 ,33) OR type >=70 AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187";
 
 if(!isset($_GET['onder']))
 {
@@ -21,7 +21,7 @@ else{
     $grens1=$_GET['onder'];
     $grens2=$_GET['boven'];
 }
-$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 ORDER BY timestamp DESC LIMIT " . $grens1 . "," . $grens2 . ") AS sub GROUP BY mmsi ORDER BY timestamp DESC";
+$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187 ORDER BY timestamp DESC LIMIT " . $grens1 . "," . $grens2 . ") AS sub GROUP BY mmsi ORDER BY timestamp DESC";
 
 echo '<table>
     <tr>
