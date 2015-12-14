@@ -13,11 +13,12 @@
  * Time: 18:57
  */
 require_once "db.php";
+require_once "config.php";
 $pages = 0;
 $lower = 0;
 $upper = 50;
 $pag = 1;
-$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data WHERE type IN(0 ,33) OR type >=70 AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187";
+$count = "SELECT COUNT(DISTINCT mmsi) AS count FROM ais_data WHERE type IN(0 ,33) OR type >=70 $limiter";
 
 if(!isset($_GET['onder']))
 {
@@ -28,7 +29,7 @@ else{
     $lower1 = $_GET['onder'];
     $upper2 = $_GET['boven'];
 }
-$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187 ORDER BY timestamp DESC LIMIT " . $lower1 . "," . $upper2 . ") AS sub GROUP BY mmsi ORDER BY timestamp DESC";
+$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 $limiter ORDER BY timestamp DESC LIMIT " . $lower1 . "," . $upper2 . ") AS sub GROUP BY mmsi ORDER BY timestamp DESC";
 echo '<h1 style="text-align:center;">Hoofdpagina</h1>
 <h3 style="text-align:center;">Op deze pagina vindt u een overzicht van alle schepen die de laatste tijd in het havengebied zijn geweest. Klik op één van
 de schepen om meer informatie te krijgen over dit schip.</h3>';

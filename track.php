@@ -8,6 +8,7 @@
  */
 
 require_once 'db.php';
+require_once 'config.php';
 ?>
 <html>
 <head>
@@ -21,7 +22,7 @@ require_once 'db.php';
 
 <?php
 if (isset($_GET['mmsi'])) {
-    $count = "SELECT count(mmsi) as count FROM ais_data WHERE mmsi=$_GET[mmsi] AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187";
+    $count = "SELECT count(mmsi) as count FROM ais_data WHERE mmsi=$_GET[mmsi] $limiter";
     if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
     $num_rec_per_page = 120;
     $total_records = 0;
@@ -33,7 +34,7 @@ if (isset($_GET['mmsi'])) {
     mysqli_free_result($result);
 }
     $hours = round(($total_records / 60), 1);
-    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187 ORDER BY TIMESTAMP DESC LIMIT $start_from, $num_rec_per_page";
+    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] $limiter ORDER BY TIMESTAMP DESC LIMIT $start_from, $num_rec_per_page";
 
     if ($result = mysqli_query($con, $sql)) {
         echo '
