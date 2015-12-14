@@ -16,7 +16,7 @@ require_once 'db.php';
 <head>
     <title>Hoofdpagina PoC groep C</title>
     <link rel="stylesheet" href="style.css" type="text/css">
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
         function showShips(str) {
             if (str == "") {
