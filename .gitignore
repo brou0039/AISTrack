@@ -3,3 +3,4 @@ db.php
 *.iml
 .idea/encodings.xml
 *.xml
+/bower_components

@@ -8,48 +8,45 @@
  */
 
   //db.php is used to connect to the database. in this file a mysqli object is made, called $con.
-require_once 'db.php';
 
-$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data ORDER BY timestamp DESC LIMIT 18446744073709551615) AS sub GROUP BY mmsi ORDER BY timestamp DESC"; //TODO optimise query
 //$sql = "SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 GROUP BY mmsi ORDER BY timestamp DESC";
+require_once 'db.php';
 ?>
 <html>
 <head>
     <title>Hoofdpagina PoC groep C</title>
     <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script>
+        function showShips(str) {
+            if (str == "") {
+                document.getElementById("txtHint").innerHTML = "";
+
+            } else {
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "getships.php", true);
+                xmlhttp.send();
+            }
+        }
+    </script>
+
 </head>
 <body>
 <h1>Hoofdpagina</h1>
 <h3>Op deze pagina vindt u een overzicht van alle schepen die de laatste tijd in de haven zijn geweest. Klik op één van
 de schepen om meer informatie te krijgen over dit schip.</h3>
-<table>
-    <tr>
-        <th>
-            MMSI nummer
-        </th>
-        <th>
-            Naam schip
-        </th>
-        <th>
-            Laatst geregistreerde aanwezigheid
-        </th>
-    </tr>
-
-<?php
-if($result = mysqli_query($con, $sql))
-{
-    while($row = mysqli_fetch_assoc($result))
-    {
-        $date = DateTime::createFromFormat('U', $row['timestamp']);
-        echo '<tr><td><a href="track.php?mmsi=' . $row['mmsi'] . '&name=' . $row['name'] .
-            '">' . $row['mmsi'] . '</a></td><td>' . $row['name'] . '</td><td>' . date_format($date, 'H:i:s d-m-Y') . '</td></tr>';
-    }
-    mysqli_free_result($result);
-}
-mysqli_close($con);
-
-?>
-
-</table>
+<button onclick="showShips(this.value)" value="gitm">Get Ships</button>
+<div id="txtHint"><b>Ship info will be listed here...</b></div>
 </body>
 </html>
