@@ -1,10 +1,16 @@
 table {
-    border-collapse: collapse;
+
+    border: solid 2px #686868;
+    border-radius: 7px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 th, td {
     text-align: left;
     padding: 8px;
+    border-collapse: collapse;
 }
 
 tr:nth-child(even) {
@@ -14,4 +20,23 @@ tr:nth-child(even) {
 th {
     border-bottom: solid 1px;
 
+}
+
+#navbalk {
+    border: solid 2px #686868;
+    border-radius: 5px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#extra {
+    border-collapse: collapse;
+    border: none;
+}
+
+#extra th {
+    border-bottom: none;
+    text-decoration: underline;
 }

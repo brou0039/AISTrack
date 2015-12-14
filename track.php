@@ -14,16 +14,16 @@ require_once 'db.php';
     <title>Tracking</title>
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body>
-<h1>Tracking Page</h1>
+<body style="align-self: center">
+<h1 style="text-align:center;">Tracking Page</h1>
 
 
 
 <?php
 if (isset($_GET['mmsi'])) {
-    $count = "SELECT count(mmsi) as count FROM ais_data WHERE mmsi=$_GET[mmsi]";
+    $count = "SELECT count(mmsi) as count FROM ais_data WHERE mmsi=$_GET[mmsi] AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187";
     if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
-    $num_rec_per_page = 50;
+    $num_rec_per_page = 120;
     $total_records = 0;
     $start_from = ($page-1) * $num_rec_per_page;
     if ($result = mysqli_query($con, $count)) {
@@ -32,17 +32,21 @@ if (isset($_GET['mmsi'])) {
         }
     mysqli_free_result($result);
 }
-    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] ORDER BY TIMESTAMP DESC LIMIT $start_from, $num_rec_per_page";
+    $hours = round(($total_records / 60), 1);
+    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] AND latitude BETWEEN 51.211508 AND 51.348199 AND longitude BETWEEN 3.747404 AND 3.876187 ORDER BY TIMESTAMP DESC LIMIT $start_from, $num_rec_per_page";
 
     if ($result = mysqli_query($con, $sql)) {
         echo '
-        <h3>Hier staan de gegevens van het schip dat is aangeklikt in de tabel op de hoofdpagina.</h3>
-        <table id="table">
+        <h3 style="text-align:center;">Hier staan de gegevens van het schip dat is aangeklikt in de tabel op de hoofdpagina, onderverdeeld in stukken van twee uur. </h3>
+        <table id="extra">
         <tr>
             <th>' . $_GET["mmsi"] . '</th>
             <th>' . $_GET["name"] . '</th>
-            </tr>
-            <tr>
+            <th>totale tijd in havengebied ≈ ' . $hours . ' uur</th>
+        </tr>
+        </table>
+        <table>
+        <tr>
         <th>
             tijd
         </th>
@@ -66,6 +70,7 @@ if (isset($_GET['mmsi'])) {
         $total_pages = ceil($total_records / $num_rec_per_page);
         mysqli_free_result($result);
         echo '</table>';
+        echo '<div id="navbalk">';
         for ($i=1; $i<=$total_pages; $i++) {
             echo "<a href='track.php?mmsi=" . $_GET['mmsi'] . "&page=" . $i ."&name=" . $_GET['name'] . "'>".$i. "</a> ";
         };
@@ -78,6 +83,7 @@ if (isset($_GET['mmsi'])) {
 
     ?>
 
-<a href="index.php">terug naar de hoofdpagina.</a>
+<a href="index.php"><br/>terug naar de hoofdpagina.</a>
+</div>
 </body>
 </html>
