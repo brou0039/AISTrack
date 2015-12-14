@@ -2,7 +2,7 @@
 <?php
 require_once 'db.php';
 $limit = 18446744073709551615;
-$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data ORDER BY timestamp DESC LIMIT 1000) AS sub GROUP BY mmsi ORDER BY timestamp DESC"; //TODO optimise query
+$sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data ORDER BY timestamp DESC LIMIT 18446744073709551615) AS sub GROUP BY mmsi ORDER BY timestamp DESC"; //TODO optimise query
 ?>
 <?php
 echo '<table>
