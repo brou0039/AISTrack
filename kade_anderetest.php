@@ -8,6 +8,9 @@
 require_once 'db.php';
 require_once 'vendor/autoload.php';
 
+use Location\Polygon;
+use Location\Coordinate;
+
 function getKades($con)
 {
     $sql = 'SELECT K.id AS kid, K.naam AS knaam , P.id AS pid , P.longitude AS plongitude, P.latitude AS platitude
@@ -33,4 +36,29 @@ function getKades($con)
     return null;
 }
 
-var_dump(getkades($con));
+function createPolygons($kades)
+{
+    $polygons = array();
+    foreach($kades as $id => $kade) {
+        $polygon = new Polygon();
+        foreach($kade as $point) {
+            $latitude = $point['latitude'];
+            $longitude = $point['longitude'];
+            $polygon->addPoint(new Coordinate($latitude, $longitude));
+        }
+        $polygons[$id] = $polygon;
+    }
+    return $polygons;
+}
+
+function checkShipIsOnKade($polygons, $ship)
+{
+    $polygonId = null;
+    foreach($polygons as $id => $polygon) {
+        if ($polygon->contains(new Coordinate($ship['latitude'], $ship['longitude']))) {
+            return $polygonId;
+        }
+    }
+    return $polygonId;
+}
+
