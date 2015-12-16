@@ -6,8 +6,9 @@
  * Time: 19:31
  */
 require_once 'db.php';
+require_once 'vendor/autoload.php';
 
-function getKades()
+function getKades($con)
 {
     $sql = 'SELECT K.id AS kid, K.naam AS knaam , P.id AS pid , P.longitude AS plongitude, P.latitude AS platitude
         FROM kadepunt P , kade K WHERE K.id = P.Kade_id ORDER BY K.id ASC , P.id ASC';
@@ -31,3 +32,5 @@ function getKades()
     }
     return null;
 }
+
+var_dump(getkades($con));
