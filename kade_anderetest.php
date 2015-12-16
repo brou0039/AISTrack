@@ -51,7 +51,7 @@ function createPolygons($kades)
     return $polygons;
 }
 
-function checkShipIsOnKade($polygons, $ship)
+function checkShipOnQuay($polygons, $ship)
 {
     $polygonId = null;
     foreach($polygons as $id => $polygon) {
