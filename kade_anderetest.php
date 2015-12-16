@@ -27,7 +27,7 @@ function getKades()
         }
         mysqli_free_result($result);
         mysqli_close($con);
-        return kades;
+        return $kades;
     }
     return null;
 }
