@@ -33,9 +33,10 @@ if (isset($_GET['mmsi'])) {
             $total_records = $row['count'];
         }
     mysqli_free_result($result);
+
 }
     $hours = round(($total_records / 60), 1);
-    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] $limiter ORDER BY TIMESTAMP DESC LIMIT $start_from, $num_rec_per_page";
+    $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] $limiter ORDER BY TIMESTAMP ASC ";
 
     if ($result = mysqli_query($con, $sql)) {
         echo '
@@ -64,22 +65,6 @@ if (isset($_GET['mmsi'])) {
         <th>
             Navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
         </th>
-        <!--
-        <th>
-            tijd
-        </th>
-        <th>
-            longitude
-        </th>
-        <th>
-            latitude
-        </th>
-        <th>
-            navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
-        </th>
-        <th>
-            Google Maps locatie
-        </th>-->
         </tr>';
         $first = null;
         $nav5 = array();
@@ -122,10 +107,10 @@ if (isset($_GET['mmsi'])) {
         $total_pages = ceil($total_records / $num_rec_per_page);
 
         echo '</table>';
-        echo '<div id="navbalk">';
+        /*echo '<div id="navbalk">';
         for ($i=1; $i<=$total_pages; $i++) {
             echo "<a href='track.php?mmsi=" . $_GET['mmsi'] . "&page=" . $i ."&name=" . $_GET['name'] . "'>".$i. "</a> ";
-        };
+        };*/
     }
 } else {
     echo "<h2>Oeps!</h2> er is iets fout gegaan. <br />Ga terug naar de hoofdpagina en probeer het opnieuw.<br/><br/>";
@@ -134,7 +119,6 @@ if (isset($_GET['mmsi'])) {
     ?>
 
 <a href="index.php"><br/>terug naar de hoofdpagina.</a>
-<!--</div>-->
 </body>
 </html>
 
