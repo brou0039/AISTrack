@@ -32,11 +32,13 @@ if (isset($_GET['mmsi'])) {
         while ($row = mysqli_fetch_assoc($result)) {
             $total_records = $row['count'];
         }
-    mysqli_free_result($result);
+
+        mysqli_free_result($result);
 
 }
     $hours = round(($total_records / 60), 1);
     $sql = "SELECT name, timestamp, longitude, latitude, navstat FROM ais_data WHERE mmsi=$_GET[mmsi] $limiter ORDER BY TIMESTAMP ASC ";
+
 
     if ($result = mysqli_query($con, $sql)) {
         echo '
@@ -111,6 +113,7 @@ if (isset($_GET['mmsi'])) {
         for ($i=1; $i<=$total_pages; $i++) {
             echo "<a href='track.php?mmsi=" . $_GET['mmsi'] . "&page=" . $i ."&name=" . $_GET['name'] . "'>".$i. "</a> ";
         };*/
+
     }
 } else {
     echo "<h2>Oeps!</h2> er is iets fout gegaan. <br />Ga terug naar de hoofdpagina en probeer het opnieuw.<br/><br/>";
