@@ -27,7 +27,8 @@ function getKades($con)
             $latitude = $row['platitude'];
             $longitude = $row['plongitude'];
             array_push($kades[$kid], array('latitude' => $latitude,
-                                          'longitude' => $longitude));
+                                           'longitude' => $longitude,
+                                           'name' => $row['knaam']));
         }
         mysqli_free_result($result);
         mysqli_close($con);
