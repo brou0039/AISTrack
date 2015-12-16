@@ -78,7 +78,7 @@ if (isset($_GET['mmsi'])) {
         $counter = 0;
         $kades = getKades($con);
         $polygons = createPolygons($kades);
-        foreach ($results as $row) {
+        foreach ($results as $idRow => $row) {
 
             if($first == null) {
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
@@ -87,12 +87,19 @@ if (isset($_GET['mmsi'])) {
                 $first = 1;
             }
 
-            if($row['navstat'] == 5)
-            {
-
+            if($row['navstat'] == 5 && (isset($results[$idRow + 1]) && $results[$idRow + 1]['navstat'] != 5))
+            {   
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Kade meetpunt aan kade ' . checkShipIsOnKade($polygons, $row) . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Kade meetpunt eind ' . checkShipIsOnKade($polygons, $row) . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+            }
+
+            if($row['navstat'] == 5 && (isset($results[$idRow - 1]) && $results[$idRow - 1]['navstat'] != 5)) 
+            {
+                 $date = DateTime::createFromFormat('U', $row['timestamp']);
+                echo '<tr><td>Kade meetpunt begin' . checkShipIsOnKade($polygons, $row) . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+
             }
 
             if(++$counter ==$numResult)
