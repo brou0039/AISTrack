@@ -1,0 +1,7 @@
+{
+    "name": "hz/ais-track",
+    "description": "AIS Tracker for Zeeland Seaports",
+    "require": {
+        "mjaschen/phpgeo": "^0.3.0"
+    }
+}
