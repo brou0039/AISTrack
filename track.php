@@ -65,6 +65,9 @@ if (isset($_GET['mmsi'])) {
         <th>
             Navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
         </th>
+        <th>
+            Google Maps
+        </th>
         </tr>';
         $first = null;
         $nav5 = array();
@@ -77,40 +80,31 @@ if (isset($_GET['mmsi'])) {
         $polygons = createPolygons($kades);
         foreach ($results as $row) {
 
-//check if navstat == 5, after that push the row in an array.
-//            if($row['navstat'] == 5)
-//            {
-//                array_push($nav5 , $row);
-//            }
             if($first == null) {
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
                 echo '<tr><td>Eerste meetpunt</td><td>' . date_format($date, 'H:i:s d-m-Y') .
-                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td></tr>';
+                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
                 $first = 1;
             }
+
             if($row['navstat'] == 5)
             {
 
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
                 echo '<tr><td>Kade meetpunt aan kade ' . checkShipIsOnKade($polygons, $row) . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
-                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
             }
+
             if(++$counter ==$numResult)
             {
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
                 echo '<tr><td>Laatste meetpunt</td><td>' . date_format($date, 'H:i:s d-m-Y') .
-                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td></tr>';
+                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
             }
-
-            //echo '<tr><td style="font-size: x-small">' . date_format($date, 'H:i:s d-m-Y') . '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
         }
         $total_pages = ceil($total_records / $num_rec_per_page);
 
         echo '</table>';
-        /*echo '<div id="navbalk">';
-        for ($i=1; $i<=$total_pages; $i++) {
-            echo "<a href='track.php?mmsi=" . $_GET['mmsi'] . "&page=" . $i ."&name=" . $_GET['name'] . "'>".$i. "</a> ";
-        };*/
     }
 } else {
     echo "<h2>Oeps!</h2> er is iets fout gegaan. <br />Ga terug naar de hoofdpagina en probeer het opnieuw.<br/><br/>";
