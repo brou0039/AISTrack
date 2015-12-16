@@ -51,8 +51,9 @@ function createPolygons($kades)
     return $polygons;
 }
 
-function checkShipIsOnKade($polygons, $ship)
+function checkShipIsOnKade($con, $ship)
 {
+    $polygons = createPolygons(getKades($con));
     $polygonId = null;
     foreach($polygons as $id => $polygon) {
         if ($polygon->contains(new Coordinate($ship['latitude'], $ship['longitude']))) {
