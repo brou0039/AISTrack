@@ -4,3 +4,5 @@ db.php
 .idea/encodings.xml
 *.xml
 /bower_components
+composer.lock
+/vendor
