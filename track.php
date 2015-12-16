@@ -64,15 +64,33 @@ if (isset($_GET['mmsi'])) {
         <th>
             Navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
         </th>
+        <!--
+        <th>
+            tijd
+        </th>
+        <th>
+            longitude
+        </th>
+        <th>
+            latitude
+        </th>
+        <th>
+            navigatiestatus 0-15(<a href="http://catb.org/gpsd/AIVDM.html#_types_1_2_and_3_position_report_class_a">?</a>)
+        </th>
+        <th>
+            Google Maps locatie
+        </th>-->
         </tr>';
         $first = null;
         $nav5 = array();
         $numResult = mysqli_num_rows($result);
-//        $results = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $results = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        mysqli_free_result($result);
+
         $counter = 0;
         $kades = getKades($con);
         $polygons = createPolygons($kades);
-        while ($row = mysqli_fetch_assoc($result)) {
+        foreach ($results as $row) {
 
 //check if navstat == 5, after that push the row in an array.
 //            if($row['navstat'] == 5)
@@ -89,7 +107,7 @@ if (isset($_GET['mmsi'])) {
             {
 
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Kade meetpunt aan kade '.var_dump(checkShipIsOnKade($polygons ,$row)).'</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Kade meetpunt aan kade ' . checkShipIsOnKade($polygons, $row) . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
             }
             if(++$counter ==$numResult)
@@ -109,7 +127,6 @@ if (isset($_GET['mmsi'])) {
             echo "<a href='track.php?mmsi=" . $_GET['mmsi'] . "&page=" . $i ."&name=" . $_GET['name'] . "'>".$i. "</a> ";
         };
     }
-    mysqli_free_result($result);
 } else {
     echo "<h2>Oeps!</h2> er is iets fout gegaan. <br />Ga terug naar de hoofdpagina en probeer het opnieuw.<br/><br/>";
 
