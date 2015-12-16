@@ -31,7 +31,7 @@ else{
 }
 $sql = "SELECT mmsi, name, timestamp FROM ( SELECT mmsi, name, timestamp FROM ais_data WHERE type IN(0 ,33) OR type >=70 $limiter ORDER BY timestamp DESC LIMIT " . $lower1 . "," . $upper2 . ") AS sub GROUP BY mmsi ORDER BY timestamp DESC";
 echo '<h1 style="text-align:center;">Hoofdpagina</h1>
-<h3 style="text-align:center;">Op deze pagina vindt u een overzicht van alle schepen die de laatste tijd in het havengebied zijn geweest. Klik op één van
+<h3 style="text-align:center;">Op deze pagina vindt u een overzicht van alle schepen die de laatste tijd in het havengebied zijn geweest. Klik op een van
 de schepen om meer informatie te krijgen over dit schip.</h3>';
 echo '<table>
     <tr>
