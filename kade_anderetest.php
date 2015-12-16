@@ -55,9 +55,8 @@ function checkShipIsOnKade($polygons, $ship)
 {
     $polygonId = null;
     foreach($polygons as $id => $polygon) {
-
+        //var_dump($polygon);
         if ($polygon->contains(new Coordinate($ship['latitude'], $ship['longitude']))) {
-            $polygonId = $id;
             return $polygonId;
         }
     }
