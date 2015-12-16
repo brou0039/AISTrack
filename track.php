@@ -82,8 +82,14 @@ if (isset($_GET['mmsi'])) {
 
             if($first == null) {
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Eerste meetpunt</td><td>' . date_format($date, 'H:i:s d-m-Y') .
-                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+		$kadeId = null;
+		if ($row['navstat'] == 5) {
+                   $kadeId = checkShipIsOnKade($polygons, $row);
+                   var_dump($kadeId);	
+		}
+                echo '<tr><td>Kade meetpunt begin' . $kadeId . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                    '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
+
                 $first = 1;
             }
 
@@ -104,8 +110,13 @@ if (isset($_GET['mmsi'])) {
 
             if(++$counter ==$numResult)
             {
+		$kadeId = null;
+		if ($row['navstat'] == 5) {
+                   $kadeId = checkShipIsOnKade($polygons, $row);
+                   var_dump($kadeId);	
+		}
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Laatste meetpunt</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Laatste meetpunt : ' . $kadeId . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>' . $row['navstat'] . '</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
             }
         }
