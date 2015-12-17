@@ -88,9 +88,8 @@ if (isset($_GET['mmsi'])) {
 		$kadeId = null;
 		if ($row['navstat'] == 5) {
             $kadeId = checkShipOnQuay($polygons, $row);
-            $kadeNaam = $kades[$kadeId]['name'];
 		}
-                echo '<tr><td>Eerste Meeptunt </td><td> ' . $kadeId . ', ' . $kadeNaam . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Eerste Meeptunt </td><td> ' . $kadeId .  '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
 
                 $first = 1;
@@ -99,18 +98,17 @@ if (isset($_GET['mmsi'])) {
             if($row['navstat'] == 5 && (isset($results[$idRow + 1]) && $results[$idRow + 1]['navstat'] != 5))
             {
                 $kadeId = checkShipOnQuay($polygons, $row);
-               $kadeNaam = $kades[$kadeId]['name']; 
+
                 $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Kade meetpunt eind</td><td>' . $kadeId . ',' . $kadeNaam . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Kade meetpunt eind</td><td>' . $kadeId . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
             }
 
             if($row['navstat'] == 5 && (isset($results[$idRow - 1]) && $results[$idRow - 1]['navstat'] != 5)) 
             {
                 $kadeId = checkShipOnQuay($polygons, $row);
-                $kadeNaam = $kades[$kadeId]['name'];
                  $date = DateTime::createFromFormat('U', $row['timestamp']);
-                echo '<tr><td>Kade meetpunt begin</td><td>' . $kadeId . ', ' . $kadeNaam . '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
+                echo '<tr><td>Kade meetpunt begin</td><td>' . $kadeId .  '</td><td>' . date_format($date, 'H:i:s d-m-Y') .
                     '</td><td>' . $row['longitude'] . '</td><td>' . $row['latitude'] . '</td><td>'.$row['navstat'].'</td><td><a href="https://www.google.nl/maps/@' . $row['latitude'] . ',' . $row['longitude'] . ',17z?hl=en">Google Maps</a></td></tr>';
 
             }
